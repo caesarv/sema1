@@ -1,11 +1,14 @@
 ---
 - hosts: routers
-  gather_facts: false
-  connection: local
+  #gather_facts: false
   
   tasks:
    - name: run show version on ios device
-     ios_command:
+     cisco.ios.ios_command:
        commands:
-         - show version
-      host: "{{ inventory_hostname }}"
+         - show ip int br
+     register: result
+
+   - debug:
+       msg: "{{ result.stdout_lines[0] }}"
+     when: result.stdout[0] != ""
